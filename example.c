@@ -25,12 +25,21 @@ User *user_create(char *name)
 
 int main(int argc, char *argv[])
 {
-    // Will be freed automatically.
+    // autoptr will ensure `free` is called on my_num before return
     autoptr int *my_num = malloc(sizeof(*my_num));
 
-    // In the end will automatically call user_destroy with my_user
+    if (1) {
+        // autoptr/defer is scope based
+        autoptr int *my_other_num = malloc(sizeof(*my_other_num));
+
+        // my_other_num is freed here
+    }
+
+    // You can use custom function!
+    // This will call user_destroy with my_user before return
     autoptr_func(user_destroy) User *my_user = user_create("Denloob");
 
+    // autoptr/defer run LIFO style
     // Will print `Hello, Denloob and the World!`
     defer({ printf("World!\n"); });
     defer({ printf("%s and the ", (*(User **)ptr)->name); }, my_user);
@@ -38,13 +47,15 @@ int main(int argc, char *argv[])
 
 
     /* The complete output is:
-```
+
 Hello, Denloob and the World!
 ---
 Freeing Denloob
 ---
-```
+
     */
+
+    // More documentation is located in comments in autoptr.h
 
     return EXIT_SUCCESS;
 }
