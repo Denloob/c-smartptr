@@ -83,6 +83,14 @@ void autoptr__free(void *ptr)
  */
 #define defer(...) autoptr__defer_chooser(__VA_ARGS__)(__VA_ARGS__)
 
+/*
+ * @brief Very similar to defer(block, param) but allows you to pass a function
+ * directly.
+ *
+ * @see defer(block, param)
+ */
+#define defer_func(func, param) defer({ func(*(void **)ptr); }, param)
+
 #endif
 
 /*
