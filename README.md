@@ -1,6 +1,6 @@
 # C Smartptr
 
-One header library, adding Go-like **defer** and C++ smartptr-like **auto-free** to C! \
+Header-only library, adding Go-like **defer** and C++ smartptr-like **auto-free** to C! \
 *Requires gcc (-std=gnuc99 or higher)*
 
 ## Examples
