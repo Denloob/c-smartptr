@@ -1,7 +1,7 @@
 #pragma once
 
 //
-// Header-only library, adding Go-like defer and auto-free to C (gnuc99)
+// Header-only library, adding Go-like defer and auto-free to C (gnu99)
 // Licensed under MIT License
 // Copyright (c) 2024 Denloob
 //

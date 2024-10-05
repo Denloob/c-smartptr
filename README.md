@@ -1,7 +1,7 @@
 # C Smartptr
 
 Header-only library, adding Go-like **defer** and C++ smartptr-like **auto-free** to C! \
-*Requires gcc (-std=gnuc99 or higher)*
+*Requires gcc (-std=gnu99 or higher)*
 
 ## Examples
 - Basic malloc/free
