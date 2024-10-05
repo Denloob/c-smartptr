@@ -71,7 +71,7 @@ void autoptr__free(void *ptr)
  *      char *msg = "Hi";
  *      defer({ puts(*(char **)ptr); }, msg);
  *
- * This will behave exactly as if you did (except it will run in the end of the function)
+ * This will behave exactly as if you did (except it will run in the end of the scope)
  * ```
  * typeof(msg) tmp = msg;
  * my_func(&tmp);
