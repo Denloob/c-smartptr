@@ -1,11 +1,11 @@
 #pragma once
 
 //
-// Convenient autoptr/defer in C (gnuc99)
+// Minimalistic, one header library, adding Go-like defer and auto-free to C (gnuc99)
 // Licensed under MIT License
 // Copyright (c) 2024 Denloob
 //
-// The MIT License can be found in the end of this file
+// The full license can be found in the end of this file
 //
 
 // If you do not wish to have a macro `autoptr` that calls free

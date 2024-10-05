@@ -1,6 +1,6 @@
 # C Autoptr
 
-Minimalistic, one header library, adding **defer** and **auto-free** to C! \
+Minimalistic, one header library, adding Go-like **defer** and **auto-free** to C! \
 *Requires gcc (-std=gnuc99 or higher)*
 
 ## Examples
