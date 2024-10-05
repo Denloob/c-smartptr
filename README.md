@@ -17,7 +17,7 @@ int main() {
 void user_destroy(User *user);
 
 int main() {
-    // You can specify a custom destructors
+    // You can specify custom destructors
     smartptr_func(user_destroy) User *my_user = user_create("Denloob");
 }
 ```
