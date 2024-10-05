@@ -29,7 +29,7 @@
     void cleanup_name(void *ptr) cleanup_block                                 \
         __attribute__((cleanup(cleanup_name)))
 
-#define autoptr_block(cleanup_block)                                          \
+#define autoptr_block(cleanup_block)                                           \
     autoptr__custom_helper(cleanup_block,                                      \
                            autoptr__DEFER_MAKE_UNIQUE(autoptr__cleanup_func))
 
@@ -50,7 +50,7 @@ void autoptr__free(void *ptr)
     autoptr_block(block) char autoptr__DEFER_MAKE_UNIQUE(autoptr__defer_var)
 
 #define autoptr__defer_2_arg(block, param)                                     \
-    autoptr_block(block) typeof(param) autoptr__DEFER_MAKE_UNIQUE(            \
+    autoptr_block(block) typeof(param) autoptr__DEFER_MAKE_UNIQUE(             \
         autoptr__defer_var) = param
 
 #define autoptr__defer_chooser_helper(arg1, arg2, arg3, ...) arg3
