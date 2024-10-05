@@ -16,6 +16,20 @@
 // remove the following define
 #define smartptr__setting_SUPPORT_DEFER
 
+// If you wish, you may enable for clang or any other non-gnu compiler to completely
+// ignore most* smartptr/defer statements. This can be useful for example if you
+// are using it as an LSP (like clangd).
+// * - non-special features like smartptr_func_ptr or smartptr will still work
+#if (!defined(__GNUC__) || defined(__clang__))
+
+#if 0
+#define smartptr__setting_DO_NOTHING_SPECIAL
+#else
+#error "Unsupported compiler"
+#endif
+
+#endif
+
 #ifdef smartptr__setting_SUPPORT_FREE
 #include <stdlib.h>
 #endif
@@ -25,9 +39,13 @@
 #define smartptr__DEFER_MAKE_UNIQUE(prefix)                                     \
     smartptr__DEFER_CONCAT(prefix, __COUNTER__)
 
+#ifdef smartptr__setting_DO_NOTHING_SPECIAL
+#define smartptr__custom_helper(cleanup_block, cleanup_name)
+#else
 #define smartptr__custom_helper(cleanup_block, cleanup_name)                    \
     void cleanup_name(void *ptr) cleanup_block                                 \
         __attribute__((cleanup(cleanup_name)))
+#endif
 
 #define smartptr_block(cleanup_block)                                           \
     smartptr__custom_helper(cleanup_block,                                      \
@@ -46,6 +64,12 @@ void smartptr__free(void *ptr)
 
 #ifdef smartptr__setting_SUPPORT_DEFER
 
+#ifdef smartptr__setting_DO_NOTHING_SPECIAL
+
+#define defer(block)
+
+#else
+
 /*
  * @brief Runs the block at the end of the variable scope.
  *
@@ -61,7 +85,10 @@ void smartptr__free(void *ptr)
  */
 #define defer(block) smartptr_block(block) char smartptr__DEFER_MAKE_UNIQUE(smartptr__defer_var)
 
-#endif
+
+#endif // smartptr__setting_DO_NOTHING_SPECIAL
+
+#endif // smartptr__setting_SUPPORT_DEFER
 
 /*
 
