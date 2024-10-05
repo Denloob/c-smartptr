@@ -13,15 +13,10 @@ int main()
         puts("Locking...");
         pthread_mutex_lock(&mutex);
 
-#if 1
         defer({
             puts("Unlocking...");
-            pthread_mutex_unlock(*(void **)ptr);
-        }, &mutex);
-#else
-        // If you only wish to unlock, you can use defer_func
-        defer_func(pthread_mutex_unlock, &mutex);
-#endif
+            pthread_mutex_unlock(&mutex);
+        });
 
         // Critical section
         puts("Critical section");

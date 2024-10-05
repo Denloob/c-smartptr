@@ -26,7 +26,7 @@ int main() {
 ```c
 if (x == 1) {
     pthread_mutex_lock(&mutex);
-    defer_func(pthread_mutex_unlock, &mutex);
+    defer({ pthread_mutex_unlock(&mutex); });
 
     // Do something
 
@@ -34,9 +34,10 @@ if (x == 1) {
 }
 ```
 
-- You can also defer code blocks with arguments
+- You can also defer code blocks with the variables in the scope!
 ```c
-defer({ printf("Bye %s!\n", (*(User **)ptr)->name); }, my_user);
+my_user = ...
+defer({ printf("Bye %s!\n", my_user->name); });
 ```
 
 - And if you wish, you can smartptr blocks too

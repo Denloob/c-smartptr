@@ -42,7 +42,7 @@ int main(int argc, char *argv[])
     // smartptr/defer run LIFO style
     // Will print `Hello, Denloob and the World!`
     defer({ printf("World!\n"); });
-    defer({ printf("%s and the ", (*(User **)ptr)->name); }, my_user);
+    defer({ printf("%s and the ", my_user->name); });
     printf("Hello, ");
 
 

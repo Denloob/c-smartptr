@@ -46,50 +46,20 @@ void smartptr__free(void *ptr)
 
 #ifdef smartptr__setting_SUPPORT_DEFER
 
-#define smartptr__defer_1_arg(block)                                            \
-    smartptr_block(block) char smartptr__DEFER_MAKE_UNIQUE(smartptr__defer_var)
-
-#define smartptr__defer_2_arg(block, param)                                     \
-    smartptr_block(block) typeof(param) smartptr__DEFER_MAKE_UNIQUE(             \
-        smartptr__defer_var) = param
-
-#define smartptr__defer_chooser_helper(arg1, arg2, arg3, ...) arg3
-#define smartptr__defer_chooser(...)                                            \
-    smartptr__defer_chooser_helper(__VA_ARGS__, smartptr__defer_2_arg,           \
-                                  smartptr__defer_1_arg)
-
-/* defer(block)
- *
+/*
  * @brief Runs the block at the end of the variable scope.
+ *
  * @example defer({ puts("Hi"); });
- * 
- * defer(block, param)
- * 
- * @brief Similar to defer(block), but allows a parameter.
- *          A pointer to the param will be passed as void *ptr
+ *
  * @example
  *      char *msg = "Hi";
- *      defer({ puts(*(char **)ptr); }, msg);
- *
- * This will behave exactly as if you did (except it will run in the end of the scope)
- * ```
- * typeof(msg) tmp = msg;
- * my_func(&tmp);
- * ```
+ *      defer({ puts(msg); });
  *
  * Defers run LIFO style, so
  * defer({ puts("This will run last"); });
  * defer({ puts("This will run first"); });
  */
-#define defer(...) smartptr__defer_chooser(__VA_ARGS__)(__VA_ARGS__)
-
-/*
- * @brief Very similar to defer(block, param) but allows you to pass a function
- * directly.
- *
- * @see defer(block, param)
- */
-#define defer_func(func, param) defer({ func(*(void **)ptr); }, param)
+#define defer(block) smartptr_block(block) char smartptr__DEFER_MAKE_UNIQUE(smartptr__defer_var)
 
 #endif
 
