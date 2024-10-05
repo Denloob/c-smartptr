@@ -59,3 +59,6 @@ Contributions are welcome! Open an Issue or a PR with your questions/suggestions
 
 ## License
 C Autoptr is licensed under the MIT License. See [LICENSE](./LICENSE) for more details.
+
+## Other info
+Inspired by [this](https://www.open-std.org/jtc1/sc22/wg14/www/docs/n3199.htm) proposal.
