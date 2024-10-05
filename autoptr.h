@@ -34,6 +34,7 @@
                            autoptr__DEFER_MAKE_UNIQUE(autoptr__cleanup_func))
 
 #define autoptr_func(func) autoptr_custom({ func(*(void **)ptr); })
+#define autoptr_func_ptr(func) __attribute__((cleanup(func)))
 
 #ifdef autoptr__setting_SUPPORT_FREE
 void autoptr__free(void *ptr)
