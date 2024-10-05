@@ -8,55 +8,55 @@
 // The full license can be found in the end of this file
 //
 
-// If you do not wish to have a macro `autoptr` that calls free
+// If you do not wish to have a macro `smartptr` that calls free
 // (for example if you don't have libc, remove the following define)
-#define autoptr__setting_SUPPORT_FREE
+#define smartptr__setting_SUPPORT_FREE
 
 // If you have a problem with the `defer` symbol being defined here, remove,
 // remove the following define
-#define autoptr__setting_SUPPORT_DEFER
+#define smartptr__setting_SUPPORT_DEFER
 
-#ifdef autoptr__setting_SUPPORT_FREE
+#ifdef smartptr__setting_SUPPORT_FREE
 #include <stdlib.h>
 #endif
 
-#define autoptr__DEFER_CONCAT_HELPER(x, y) x##y
-#define autoptr__DEFER_CONCAT(x, y) autoptr__DEFER_CONCAT_HELPER(x, y)
-#define autoptr__DEFER_MAKE_UNIQUE(prefix)                                     \
-    autoptr__DEFER_CONCAT(prefix, __COUNTER__)
+#define smartptr__DEFER_CONCAT_HELPER(x, y) x##y
+#define smartptr__DEFER_CONCAT(x, y) smartptr__DEFER_CONCAT_HELPER(x, y)
+#define smartptr__DEFER_MAKE_UNIQUE(prefix)                                     \
+    smartptr__DEFER_CONCAT(prefix, __COUNTER__)
 
-#define autoptr__custom_helper(cleanup_block, cleanup_name)                    \
+#define smartptr__custom_helper(cleanup_block, cleanup_name)                    \
     void cleanup_name(void *ptr) cleanup_block                                 \
         __attribute__((cleanup(cleanup_name)))
 
-#define autoptr_block(cleanup_block)                                           \
-    autoptr__custom_helper(cleanup_block,                                      \
-                           autoptr__DEFER_MAKE_UNIQUE(autoptr__cleanup_func))
+#define smartptr_block(cleanup_block)                                           \
+    smartptr__custom_helper(cleanup_block,                                      \
+                           smartptr__DEFER_MAKE_UNIQUE(smartptr__cleanup_func))
 
-#define autoptr_func(func) autoptr_block({ func(*(void **)ptr); })
-#define autoptr_func_ptr(func) __attribute__((cleanup(func)))
+#define smartptr_func(func) smartptr_block({ func(*(void **)ptr); })
+#define smartptr_func_ptr(func) __attribute__((cleanup(func)))
 
-#ifdef autoptr__setting_SUPPORT_FREE
-void autoptr__free(void *ptr)
+#ifdef smartptr__setting_SUPPORT_FREE
+void smartptr__free(void *ptr)
 {
     free(*(void **)ptr);
 }
-#define autoptr __attribute__((cleanup(autoptr__free)))
+#define smartptr __attribute__((cleanup(smartptr__free)))
 #endif
 
-#ifdef autoptr__setting_SUPPORT_DEFER
+#ifdef smartptr__setting_SUPPORT_DEFER
 
-#define autoptr__defer_1_arg(block)                                            \
-    autoptr_block(block) char autoptr__DEFER_MAKE_UNIQUE(autoptr__defer_var)
+#define smartptr__defer_1_arg(block)                                            \
+    smartptr_block(block) char smartptr__DEFER_MAKE_UNIQUE(smartptr__defer_var)
 
-#define autoptr__defer_2_arg(block, param)                                     \
-    autoptr_block(block) typeof(param) autoptr__DEFER_MAKE_UNIQUE(             \
-        autoptr__defer_var) = param
+#define smartptr__defer_2_arg(block, param)                                     \
+    smartptr_block(block) typeof(param) smartptr__DEFER_MAKE_UNIQUE(             \
+        smartptr__defer_var) = param
 
-#define autoptr__defer_chooser_helper(arg1, arg2, arg3, ...) arg3
-#define autoptr__defer_chooser(...)                                            \
-    autoptr__defer_chooser_helper(__VA_ARGS__, autoptr__defer_2_arg,           \
-                                  autoptr__defer_1_arg)
+#define smartptr__defer_chooser_helper(arg1, arg2, arg3, ...) arg3
+#define smartptr__defer_chooser(...)                                            \
+    smartptr__defer_chooser_helper(__VA_ARGS__, smartptr__defer_2_arg,           \
+                                  smartptr__defer_1_arg)
 
 /* defer(block)
  *
@@ -81,7 +81,7 @@ void autoptr__free(void *ptr)
  * defer({ puts("This will run last"); });
  * defer({ puts("This will run first"); });
  */
-#define defer(...) autoptr__defer_chooser(__VA_ARGS__)(__VA_ARGS__)
+#define defer(...) smartptr__defer_chooser(__VA_ARGS__)(__VA_ARGS__)
 
 /*
  * @brief Very similar to defer(block, param) but allows you to pass a function
