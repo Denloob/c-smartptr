@@ -50,7 +50,7 @@ void autoptr__free(void *ptr)
 
 #define autoptr__defer_2_arg(block, param)                                     \
     autoptr_custom(block) typeof(param) autoptr__DEFER_MAKE_UNIQUE(            \
-        autoptr__defer_var) = {param}
+        autoptr__defer_var) = param
 
 #define autoptr__defer_chooser_helper(arg1, arg2, arg3, ...) arg3
 #define autoptr__defer_chooser(...)                                            \
