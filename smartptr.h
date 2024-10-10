@@ -55,7 +55,7 @@
 #define smartptr_func_ptr(func) __attribute__((cleanup(func)))
 
 #ifdef smartptr__setting_SUPPORT_FREE
-void smartptr__free(void *ptr)
+static void smartptr__free(void *ptr)
 {
     free(*(void **)ptr);
 }
